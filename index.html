@@ -3,94 +3,422 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Task Management</title>
+    <title>Task Management - Sign In</title>
     <style>
+        :root {
+            --bg-color: #0b0f17;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent-glow: #3b82f6;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --input-bg: rgba(11, 15, 23, 0.6);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
+
         body {
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             display: flex;
-            justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f4f6f9;
+            justify-content: center;
+            overflow-x: hidden;
         }
-        .login-card {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        .container {
+            display: flex;
             width: 100%;
-            max-width: 400px;
+            min-height: 100vh;
         }
-        .login-card h2 {
-            margin-bottom: 20px;
-            color: #333;
-            text-align: center;
+
+        /* --- SISI KIRI: HERO / ANIMASI ICON & GRAPHIC --- */
+        .hero-section {
+            flex: 1.2;
+            background: radial-gradient(circle at 30% 30%, #1e293b 0%, #0b0f17 70%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid var(--border-color);
         }
-        .form-group {
+
+        /* Floating Animated Glowing Orbs & Grid */
+        .graphic-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.5;
+            animation: float 10s infinite alternate ease-in-out;
+        }
+
+        .orb-1 {
+            width: 260px;
+            height: 260px;
+            background: #2563eb;
+            top: 10%;
+            left: 10%;
+            animation-duration: 8s;
+        }
+
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            background: #7c3aed;
+            bottom: 10%;
+            right: 10%;
+            animation-duration: 11s;
+        }
+
+        /* Animated Floating Icon Centerpiece */
+        .icon-floating-wrapper {
+            position: relative;
+            z-index: 3;
+            width: 120px;
+            height: 120px;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(59, 130, 246, 0.3);
+            animation: iconPulse 4s infinite ease-in-out;
+        }
+
+        .icon-floating-wrapper svg {
+            width: 56px;
+            height: 56px;
+            stroke: #60a5fa;
+            filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.6));
+        }
+
+        .mesh-grid {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 80%);
+        }
+
+        .hero-brand {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-dot {
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent-glow);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .hero-caption {
+            z-index: 2;
+            max-width: 440px;
+        }
+
+        .hero-caption h1 {
+            font-size: 2.3rem;
+            font-weight: 600;
+            line-height: 1.25;
             margin-bottom: 15px;
+            background: linear-gradient(180deg, #ffffff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
+        .hero-caption p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- SISI KANAN: FORM LOGIN --- */
+        .form-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background-color: var(--bg-color);
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #666;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
         }
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
-        .btn-login {
+
+        .input-wrapper svg {
+            position: absolute;
+            left: 14px;
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-muted);
+            transition: stroke 0.2s ease;
+        }
+
+        .input-wrapper input {
             width: 100%;
-            padding: 10px;
-            background-color: #007bff;
+            padding: 12px 16px 12px 42px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--accent-glow);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        .input-wrapper input:focus + svg,
+        .input-wrapper input:focus ~ svg {
+            stroke: var(--accent-glow);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: #2563eb;
+            color: #ffffff;
             border: none;
-            color: white;
-            font-weight: bold;
-            border-radius: 4px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
-        .btn-login:hover {
-            background-color: #0056b3;
+
+        .btn-submit:hover {
+            background-color: #1d4ed8;
         }
-        .alert {
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 4px;
+
+        .btn-submit:active {
+            transform: scale(0.99);
+        }
+
+        .alert-message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
             display: none;
         }
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
+
+        .alert-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
         }
+
         .alert-success {
-            background-color: #d4edda;
-            color: #155724;
+            background-color: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            color: #86efac;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(25px, -15px) scale(1.05); }
+            100% { transform: translate(-15px, 15px) scale(0.95); }
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: translateY(0) rotate(0deg); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(59, 130, 246, 0.3); }
+            50% { transform: translateY(-12px) rotate(2deg); box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 45px rgba(59, 130, 246, 0.5); }
+        }
+
+        /* --- RESPONSIVE / MOBILE FRIENDLY --- */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .hero-section {
+                flex: none;
+                padding: 35px 24px;
+                min-height: 200px;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                align-items: center;
+                text-align: center;
+            }
+
+            .graphic-container {
+                width: 200px;
+                height: 200px;
+            }
+
+            .icon-floating-wrapper {
+                width: 80px;
+                height: 80px;
+                border-radius: 20px;
+            }
+
+            .icon-floating-wrapper svg {
+                width: 36px;
+                height: 36px;
+            }
+
+            .hero-brand {
+                margin-bottom: 15px;
+            }
+
+            .hero-caption h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero-caption p {
+                display: none;
+            }
+
+            .form-section {
+                padding: 35px 24px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
-        <h2>Login System</h2>
-        <div id="alert-box" class="alert"></div>
+    <div class="container">
+        <!-- SISI KIRI: ANIMASI ICON & GRAPHIC -->
+        <div class="hero-section">
+            <div class="mesh-grid"></div>
+            
+            <div class="hero-brand">
+                <div class="brand-dot"></div>
+                <span>TASK WORKFLOW</span>
+            </div>
 
-        <form id="loginForm">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" required placeholder="admin@gmail.com">
+            <div class="graphic-container">
+                <div class="orb orb-1"></div>
+                <div class="orb orb-2"></div>
+                <!-- Animated Floating Icon Card -->
+                <div class="icon-floating-wrapper">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" required placeholder="******">
+
+            <div class="hero-caption">
+                <h1>Kelola Project & Tugas Magang Lebih Rapi.</h1>
+                <p>Platform terintegrasi untuk tim Frontend & Backend memantau progress pengerjaan aplikasi.</p>
             </div>
-            <button type="submit" class="btn-login">Login</button>
-        </form>
+        </div>
+
+        <!-- SISI KANAN: FORM LOGIN -->
+        <div class="form-section">
+            <div class="login-box">
+                <div class="form-header">
+                    <h2>Masuk ke Akun</h2>
+                    <p>Masukkan email dan password untuk melanjutkan.</p>
+                </div>
+
+                <div id="alertBox" class="alert-message"></div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                            <input type="email" id="email" required placeholder="admin@gmail.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                            </svg>
+                            <input type="password" id="password" required placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">
+                        <span>Sign In</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -99,36 +427,32 @@
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            const alertBox = document.getElementById('alert-box');
+            const alertBox = document.getElementById('alertBox');
 
             alertBox.style.display = 'none';
 
             try {
                 const response = await fetch('http://localhost:8000/api/login.php', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
-                    alertBox.className = 'alert alert-success';
+                    alertBox.className = 'alert-message alert-success';
                     alertBox.innerText = result.message;
                     alertBox.style.display = 'block';
-                    
-                    // Simpan data login di localStorage
                     localStorage.setItem('user', JSON.stringify(result.data));
                 } else {
-                    alertBox.className = 'alert alert-danger';
+                    alertBox.className = 'alert-message alert-error';
                     alertBox.innerText = result.message;
                     alertBox.style.display = 'block';
                 }
             } catch (error) {
-                alertBox.className = 'alert alert-danger';
-                alertBox.innerText = 'Gagal menghubungi server backend!';
+                alertBox.className = 'alert-message alert-error';
+                alertBox.innerText = 'Gagal terhubung ke server backend!';
                 alertBox.style.display = 'block';
             }
         });
