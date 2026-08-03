@@ -2,6 +2,8 @@
 
 Repository frontend React untuk aplikasi **Task Management**.
 
+📌 **GitHub Project Board:** [Task Management Project #4](https://github.com/users/rudy0317/projects/4/views/1)
+
 ## Jobdesk:
 - Buat UI Login, Register, dan Dashboard.
 - Hubungkan UI ke backend PHP (`http://localhost:8000/api`).
